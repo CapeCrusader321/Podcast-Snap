@@ -36,7 +36,7 @@ apps:
 parts:
   podcasts:
     source: https://gitlab.gnome.org/World/podcasts.git
-    source-tag: 0.5.1
+    #source-tag: 0.5.1
     plugin: meson
     parse-info: [usr/share/metainfo/org.gnome.Podcasts.appdata.xml.in]
     meson-parameters:
