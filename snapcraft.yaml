@@ -1,0 +1,60 @@
+name: podcasts
+base: core22
+adopt-info: podcasts
+grade: stable
+confinement: strict
+compression: lzo
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+  - build-on: armhf
+
+layout:
+  /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkit2gtk-4.1:
+      bind: $SNAP/gnome-platform/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/webkit2gtk-4.1
+
+slots:
+  podcasts:
+    interface: dbus
+    bus: session
+    name: org.gnome.Podcasts
+
+apps:
+  podcasts:
+    command: usr/bin/podcasts
+    extensions: [gnome]
+    plugs:
+      - home
+      - audio-playback
+      - network
+      - removable-media
+      - network-status
+      - unity7
+    common-id: org.gnome.Podcasts
+    desktop: usr/share/applications/org.gnome.Podcasts.desktop.in
+        
+parts:
+  podcasts:
+    source: https://gitlab.gnome.org/World/podcasts.git
+    source-tag: 0.5.1
+    plugin: meson
+    parse-info: [usr/share/metainfo/org.gnome.Podcasts.appdata.xml.in]
+    meson-parameters:
+      - --prefix=/snap/podcasts/current/usr
+    build-packages:
+      - libsqlite3-dev
+      - libssl-dev
+      - libdbus-1-dev
+      - cargo
+      - libgstreamer1.0-dev
+      - libgstreamer-plugins-base1.0-dev
+      - libgstreamer-plugins-good1.0-dev
+      - libgstreamer-plugins-bad1.0-dev
+    override-pull: |
+      craftctl default
+      craftctl set version=$(git describe --tags --abbrev=0)
+      sed -e 's|Icon=org.gnome.Podcasts|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/org.gnome.Podcasts.svg|' -i data/org.gnome.Podcasts.desktop.in.in  
+    organize:
+      snap/podcasts/current/usr: usr  
+    
+ 
