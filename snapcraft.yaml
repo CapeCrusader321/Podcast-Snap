@@ -41,6 +41,8 @@ parts:
     parse-info: [usr/share/metainfo/org.gnome.Podcasts.appdata.xml.in]
     meson-parameters:
       - --prefix=/snap/podcasts/current/usr
+    build-snaps:
+      - cmake
     build-packages:
       - libsqlite3-dev
       - libssl-dev
